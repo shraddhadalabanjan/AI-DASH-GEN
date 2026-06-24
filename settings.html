@@ -1,0 +1,207 @@
+Setting 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - AIDashGen</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        body { background: #fafaff; padding: 40px; font-family: "Poppins", sans-serif; }
+        .settings-container {
+            max-width: 700px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px;
+        }
+        .settings-container h1 { color: #4b49ac; margin-bottom: 30px; }
+        .section {
+            background: #f8f9fa; border-radius: 15px;
+            padding: 25px; margin-bottom: 25px;
+        }
+        .section h3 { color: #4b49ac; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 600; color: #555; margin-bottom: 6px; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px 15px; border: 2px solid #ddd;
+            border-radius: 10px; font-size: 15px; box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none; border-color: #4b49ac;
+        }
+        .toggle-row {
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .toggle-row:last-child { border-bottom: none; }
+        .toggle-label { font-weight: 500; color: #444; }
+        .toggle-sub { font-size: 13px; color: #999; }
+        .toggle {
+            position: relative; width: 50px; height: 26px;
+            background: #ddd; border-radius: 13px;
+            cursor: pointer; transition: background 0.3s;
+        }
+        .toggle.on { background: #4b49ac; }
+        .toggle::after {
+            content: ''; position: absolute; top: 3px; left: 3px;
+            width: 20px; height: 20px; background: white;
+            border-radius: 50%; transition: left 0.3s;
+        }
+        .toggle.on::after { left: 27px; }
+        .btn-save {
+            width: 100%; padding: 14px; background: #4b49ac; color: white;
+            border: none; border-radius: 50px; font-size: 16px;
+            font-family: "Poppins", sans-serif; cursor: pointer; font-weight: 600;
+            margin-top: 10px; transition: background 0.2s;
+        }
+        .btn-save:hover { background: #0c007d; }
+        .btn-danger {
+            width: 100%; padding: 14px; background: white; color: #ff4444;
+            border: 2px solid #ff4444; border-radius: 50px; font-size: 16px;
+            font-family: "Poppins", sans-serif; cursor: pointer; font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-danger:hover { background: #ff4444; color: white; }
+        .back-link {
+            display: inline-block; margin-bottom: 20px; color: #4b49ac;
+            text-decoration: none; font-weight: 600;
+        }
+        #saveMsg {
+            display: none; color: green; text-align: center;
+            font-weight: 600; margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="settings-container">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <h1>⚙️ Settings</h1>
+
+    <!-- Profile Settings -->
+    <div class="section">
+        <h3>👤 Profile Settings</h3>
+        <div class="form-group">
+            <label>Display Name</label>
+            <input type="text" id="displayName" placeholder="Your name">
+        </div>
+        <div class="form-group">
+            <label>Email (read-only)</label>
+            <input type="email" id="userEmailField" placeholder="Loading..." readonly style="background:#f0f0f0; color:#888;">
+        </div>
+        <div class="form-group">
+            <label>Bio</label>
+            <input type="text" id="bio" placeholder="Short bio about yourself">
+        </div>
+    </div>
+
+    <!-- Notification Settings -->
+    <div class="section">
+        <h3>🔔 Notifications</h3>
+        <div class="toggle-row">
+            <div>
+                <div class="toggle-label">Email Notifications</div>
+                <div class="toggle-sub">Receive updates about your articles</div>
+            </div>
+            <div class="toggle on" id="emailNotif" onclick="toggleSwitch(this)"></div>
+        </div>
+        <div class="toggle-row">
+            <div>
+                <div class="toggle-label">Comment Alerts</div>
+                <div class="toggle-sub">Get notified when someone comments</div>
+            </div>
+            <div class="toggle on" id="commentAlert" onclick="toggleSwitch(this)"></div>
+        </div>
+        <div class="toggle-row">
+            <div>
+                <div class="toggle-label">Weekly Summary</div>
+                <div class="toggle-sub">Weekly stats digest email</div>
+            </div>
+            <div class="toggle" id="weeklySummary" onclick="toggleSwitch(this)"></div>
+        </div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="section">
+        <h3>🎨 Appearance</h3>
+        <div class="form-group">
+            <label>Theme</label>
+            <select id="themeSelect">
+                <option value="light">Light</option>
+                <option value="dark">Dark (coming soon)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Language</label>
+            <select id="langSelect">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="fr">French</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="btn-save" onclick="saveSettings()">💾 Save Settings</button>
+    <p id="saveMsg">✅ Settings saved successfully!</p>
+
+    <!-- Danger Zone -->
+    <div class="section" style="margin-top:25px; border: 2px solid #ffe0e0;">
+        <h3 style="color:#ff4444;">⚠️ Danger Zone</h3>
+        <p style="color:#888; font-size:14px;">These actions are irreversible. Proceed with caution.</p>
+        <button class="btn-danger" onclick="confirmDelete()">🗑️ Delete My Account</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="js/script.js"></script>
+<script>
+    // Load user email
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById("userEmailField").value = user.email;
+            // Load saved settings from localStorage
+            const saved = JSON.parse(localStorage.getItem('dashSettings_' + user.email) || '{}');
+            if (saved.displayName) document.getElementById("displayName").value = saved.displayName;
+            if (saved.bio) document.getElementById("bio").value = saved.bio;
+            if (saved.theme) document.getElementById("themeSelect").value = saved.theme;
+            if (saved.lang) document.getElementById("langSelect").value = saved.lang;
+            if (saved.emailNotif === false) document.getElementById("emailNotif").classList.remove("on");
+            if (saved.commentAlert === false) document.getElementById("commentAlert").classList.remove("on");
+            if (saved.weeklySummary === true) document.getElementById("weeklySummary").classList.add("on");
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+    function toggleSwitch(el) {
+        el.classList.toggle("on");
+    }
+
+    function saveSettings() {
+        const user = auth.currentUser;
+        if (!user) return;
+        const settings = {
+            displayName: document.getElementById("displayName").value,
+            bio: document.getElementById("bio").value,
+            theme: document.getElementById("themeSelect").value,
+            lang: document.getElementById("langSelect").value,
+            emailNotif: document.getElementById("emailNotif").classList.contains("on"),
+            commentAlert: document.getElementById("commentAlert").classList.contains("on"),
+            weeklySummary: document.getElementById("weeklySummary").classList.contains("on"),
+        };
+        localStorage.setItem('dashSettings_' + user.email, JSON.stringify(settings));
+        const msg = document.getElementById("saveMsg");
+        msg.style.display = "block";
+        setTimeout(() => msg.style.display = "none", 3000);
+    }
+
+    function confirmDelete() {
+        if (confirm("Are you sure you want to delete your account? This cannot be undone.")) {
+            alert("Account deletion requested. In a real app, this would be processed.");
+        }
+    }
+</script>
+</body>
+</html>

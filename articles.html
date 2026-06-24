@@ -1,0 +1,225 @@
+Article 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Articles - AIDashGen</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        body { background: #fafaff; padding: 40px; font-family: "Poppins", sans-serif; }
+        .articles-container {
+            max-width: 850px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px;
+        }
+        .articles-container h1 { color: #4b49ac; margin-bottom: 5px; }
+        .back-link {
+            display: inline-block; margin-bottom: 20px;
+            color: #4b49ac; text-decoration: none; font-weight: 600;
+        }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid #eee; }
+
+        /* Add Article Form */
+        .add-form {
+            background: #f3f0ff; padding: 25px;
+            border-radius: 15px; margin-bottom: 30px;
+        }
+        .add-form h3 { color: #4b49ac; margin-bottom: 15px; }
+        .input-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .input-row input {
+            flex: 1; min-width: 200px; padding: 12px 16px;
+            border: 2px solid #ddd; border-radius: 10px;
+            font-size: 15px; font-family: "Poppins", sans-serif;
+        }
+        .input-row input:focus { outline: none; border-color: #4b49ac; }
+        .btn-publish {
+            padding: 12px 24px; background: #4b49ac; color: white;
+            border: none; border-radius: 10px; font-size: 15px;
+            font-family: "Poppins", sans-serif; cursor: pointer;
+            font-weight: 600; transition: background 0.2s; white-space: nowrap;
+        }
+        .btn-publish:hover { background: #0c007d; }
+
+        /* Articles List */
+        #articlesList { margin-top: 10px; }
+        .article-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px; background: #f8f9fa;
+            border-radius: 12px; margin-bottom: 12px;
+            border-left: 4px solid #4b49ac;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .article-info { flex: 1; }
+        .article-title { font-weight: 600; color: #333; font-size: 15px; margin-bottom: 4px; }
+        .article-meta { font-size: 12px; color: #999; }
+        .article-actions { display: flex; gap: 8px; }
+        .badge-status {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 12px; font-weight: 600;
+            background: #e3f9e5; color: #27ae60;
+        }
+        .btn-delete {
+            padding: 8px 16px; background: white; color: #ff4444;
+            border: 2px solid #ff4444; border-radius: 8px;
+            font-size: 13px; font-family: "Poppins", sans-serif;
+            cursor: pointer; font-weight: 600; transition: all 0.2s;
+        }
+        .btn-delete:hover { background: #ff4444; color: white; }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center; padding: 50px 20px; color: #bbb;
+        }
+        .empty-state .icon { font-size: 48px; margin-bottom: 15px; }
+        .empty-state p { font-size: 15px; }
+
+        /* Toast */
+        #toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #4b49ac; color: white;
+            padding: 12px 24px; border-radius: 10px;
+            font-size: 14px; font-weight: 600;
+            display: none; z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div class="articles-container">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <h1>📝 My Articles</h1>
+    <p style="color:#999; margin-bottom:20px;">Publish and manage your articles</p>
+    <hr>
+
+    <!-- Add Article Form -->
+    <div class="add-form">
+        <h3>✏️ Add New Article</h3>
+        <div class="input-row">
+            <input type="text" id="articleTitle" placeholder="Enter article title..." />
+            <button class="btn-publish" onclick="addArticle()">🚀 Publish</button>
+        </div>
+    </div>
+
+    <!-- Articles List -->
+    <div id="articlesList">
+        <div class="empty-state">
+            <div class="icon">📭</div>
+            <p>No articles yet. Publish your first one above!</p>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="js/script.js"></script>
+<script>
+    const API = "http://localhost:5000";
+    let currentUser = null;
+
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            currentUser = user;
+            loadArticles();
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+    async function loadArticles() {
+        try {
+            const res = await fetch(`${API}/api/articles?email=${currentUser.email}`);
+            const articles = await res.json();
+            renderArticles(articles);
+        } catch (err) {
+            document.getElementById("articlesList").innerHTML =
+                `<p style="color:red;">⚠️ Could not connect to server. Make sure backend is running.</p>`;
+        }
+    }
+
+    function renderArticles(articles) {
+        const container = document.getElementById("articlesList");
+        if (!articles || articles.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="icon">📭</div>
+                    <p>No articles yet. Publish your first one above!</p>
+                </div>`;
+            return;
+        }
+        container.innerHTML = articles.map((a, index) => `
+            <div class="article-item" id="article-${index}">
+                <div class="article-info">
+                    <div class="article-title">${escapeHtml(a.title)}</div>
+                    <div class="article-meta">👁️ ${a.views} views &nbsp;|&nbsp; 💬 ${a.comments} comments</div>
+                </div>
+                <div class="article-actions">
+                    <span class="badge-status">✅ ${a.status}</span>
+                    <button class="btn-delete" onclick="deleteArticle('${escapeHtml(a.title)}', ${index})">🗑️ Delete</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function addArticle() {
+        const titleInput = document.getElementById("articleTitle");
+        const title = titleInput.value.trim();
+        if (!title) {
+            showToast("⚠️ Please enter a title!", "#f39c12");
+            return;
+        }
+        try {
+            const res = await fetch(`${API}/api/articles`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: currentUser.email, title })
+            });
+            if (res.ok) {
+                titleInput.value = "";
+                showToast("🎉 Article published!");
+                loadArticles();
+            }
+        } catch (err) {
+            showToast("⚠️ Server not reachable!", "#ff4444");
+        }
+    }
+
+    async function deleteArticle(title, index) {
+        if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
+        try {
+            const res = await fetch(`${API}/api/articles`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: currentUser.email, title })
+            });
+            if (res.ok) {
+                showToast("🗑️ Article deleted!");
+                loadArticles();
+            }
+        } catch (err) {
+            showToast("⚠️ Server not reachable!", "#ff4444");
+        }
+    }
+
+    function showToast(msg, color = "#4b49ac") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.background = color;
+        t.style.display = "block";
+        setTimeout(() => t.style.display = "none", 3000);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+</script>
+</body>
+</html>

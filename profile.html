@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - AIDashGen</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body style="background:#fafaff; padding:40px;">
+
+<div style="max-width:700px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.1); padding:40px; text-align: center;">
+    <h1 style="color:#4b49ac; margin-bottom: 20px;">👤 Your Profile</h1>
+    
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin-bottom: 30px;">
+        <p style="font-size: 18px; color: #555;">Logged in as:</p>
+        <p id="userEmail" style="font-size:22px; font-weight: 600; color: #4b49ac;">Loading...</p>
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 20px;">
+        <a href="dashboard.html" style="text-decoration:none; padding:12px 25px; border: 2px solid #4b49ac; color:#4b49ac; border-radius:50px; font-weight: 600;">
+            ← Back to Dashboard
+        </a>
+        <button onclick="logout()" style="padding:12px 25px; background:#ff4444; color:white; border:none; border-radius:50px; font-size:16px; cursor:pointer; font-weight: 600;">
+            Logout
+        </button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+
+<script src="js/script.js"></script>
+
+<script>
+    // This script ensures the email shows up as soon as the page loads
+    auth.onAuthStateChanged(user => {
+        if (user) {
+            document.getElementById("userEmail").textContent = user.email;
+        } else {
+            // If user logs out or isn't logged in, send them to login page
+            window.location.href = "login.html";
+        }
+    });
+</script>
+
+</body>
+</html>

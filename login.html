@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIDashGen - Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #4b49ac, #0c007d);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Poppins", sans-serif;
+        }
+        .login-box {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-box h1 { 
+            color: #4b49ac; 
+            margin-bottom: 30px; 
+            font-size: 36px; 
+        }
+        .login-box h2 { 
+            color: #333; 
+            margin-bottom: 10px; 
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: #4b49ac;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .login-btn:hover { background: #0c007d; }
+        .link { 
+            color: #4b49ac; 
+            text-decoration: none; 
+            display: block; 
+            margin-top: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h1>AIDashGen</h1>
+    <h2>Welcome Back!</h2>
+    <p id="formTitle">Sign in to your AI Dashboard</p>
+
+    <form id="authForm">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit" class="login-btn" id="authButton">Login</button>
+    </form>
+
+    <a href="#" class="link" id="toggleLink">Don't have an account? Register</a>
+</div>
+
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
+</body>
+</html>

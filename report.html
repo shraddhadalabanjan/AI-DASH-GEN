@@ -1,0 +1,247 @@
+Report 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report - AIDashGen</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        body { background: #fafaff; padding: 40px; font-family: "Poppins", sans-serif; }
+        .report-page {
+            max-width: 850px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px;
+        }
+        .report-page h1 { color: #4b49ac; margin-bottom: 5px; }
+        .subtitle { color: #999; margin-bottom: 30px; font-size: 14px; }
+        .back-link {
+            display: inline-block; margin-bottom: 20px; color: #4b49ac;
+            text-decoration: none; font-weight: 600;
+        }
+
+        /* Stat cards row */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 15px; margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #4b49ac, #7978e9);
+            border-radius: 15px; padding: 20px; color: white; text-align: center;
+        }
+        .stat-card:nth-child(2) { background: linear-gradient(135deg, #f3797e, #f8b26a); }
+        .stat-card:nth-child(3) { background: linear-gradient(135deg, #57caeb, #3d94f6); }
+        .stat-card:nth-child(4) { background: linear-gradient(135deg, #6fcf97, #27ae60); }
+        .stat-card .num { font-size: 28px; font-weight: 700; }
+        .stat-card .lbl { font-size: 13px; opacity: 0.9; }
+
+        /* Bar chart */
+        .section { margin-bottom: 30px; }
+        .section h3 { color: #4b49ac; margin-bottom: 15px; font-size: 18px; }
+        .bar-chart { background: #f8f9fa; border-radius: 15px; padding: 25px; }
+        .bar-row {
+            display: flex; align-items: center; margin-bottom: 14px; gap: 12px;
+        }
+        .bar-label { width: 90px; font-size: 13px; color: #555; font-weight: 500; text-align: right; }
+        .bar-track { flex: 1; background: #e8e8e8; border-radius: 50px; height: 18px; }
+        .bar-fill {
+            height: 100%; border-radius: 50px;
+            background: linear-gradient(90deg, #4b49ac, #7978e9);
+            transition: width 1s ease;
+        }
+        .bar-val { width: 50px; font-size: 13px; font-weight: 600; color: #4b49ac; }
+
+        /* Performance table */
+        .perf-table { width: 100%; border-collapse: collapse; }
+        .perf-table th {
+            background: #f3f3f3; padding: 12px 15px;
+            text-align: left; font-size: 13px; color: #888; font-weight: 600;
+        }
+        .perf-table td { padding: 12px 15px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+        .perf-table tr:last-child td { border-bottom: none; }
+        .badge {
+            padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+        }
+        .badge.published { background: #e3f9e5; color: #27ae60; }
+        .badge.trending  { background: #fef3e2; color: #f39c12; }
+        .badge.draft     { background: #f0f0f0; color: #999; }
+
+        /* Summary box */
+        .summary-box {
+            background: linear-gradient(135deg, #f0effe, #e8e7ff);
+            border-radius: 15px; padding: 25px;
+            border-left: 5px solid #4b49ac;
+        }
+        .summary-box h3 { color: #4b49ac; margin-bottom: 10px; }
+        .summary-box p { color: #555; line-height: 1.7; font-size: 14px; margin: 0; }
+
+        /* Download button */
+        .btn-download {
+            display: inline-block; padding: 12px 28px; background: #4b49ac;
+            color: white; border: none; border-radius: 50px; font-size: 15px;
+            font-family: "Poppins", sans-serif; cursor: pointer;
+            font-weight: 600; text-decoration: none; transition: background 0.2s;
+        }
+        .btn-download:hover { background: #0c007d; }
+
+        @media (max-width: 600px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="report-page">
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+    <h1>📊 Performance Report</h1>
+    <p class="subtitle">Your content analytics overview — updated in real time</p>
+
+    <!-- Stat cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="num">60.5k</div>
+            <div class="lbl">Total Views</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">150</div>
+            <div class="lbl">Total Likes</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">320</div>
+            <div class="lbl">Comments</div>
+        </div>
+        <div class="stat-card">
+            <div class="num">70</div>
+            <div class="lbl">Published</div>
+        </div>
+    </div>
+
+    <!-- Monthly views bar chart -->
+    <div class="section">
+        <h3>📅 Monthly Views</h3>
+        <div class="bar-chart">
+            <div class="bar-row">
+                <span class="bar-label">January</span>
+                <div class="bar-track"><div class="bar-fill" style="width:72%"></div></div>
+                <span class="bar-val">7.2k</span>
+            </div>
+            <div class="bar-row">
+                <span class="bar-label">February</span>
+                <div class="bar-track"><div class="bar-fill" style="width:58%"></div></div>
+                <span class="bar-val">5.8k</span>
+            </div>
+            <div class="bar-row">
+                <span class="bar-label">March</span>
+                <div class="bar-track"><div class="bar-fill" style="width:85%"></div></div>
+                <span class="bar-val">8.5k</span>
+            </div>
+            <div class="bar-row">
+                <span class="bar-label">April</span>
+                <div class="bar-track"><div class="bar-fill" style="width:63%"></div></div>
+                <span class="bar-val">6.3k</span>
+            </div>
+            <div class="bar-row">
+                <span class="bar-label">May</span>
+                <div class="bar-track"><div class="bar-fill" style="width:91%"></div></div>
+                <span class="bar-val">9.1k</span>
+            </div>
+            <div class="bar-row">
+                <span class="bar-label">June</span>
+                <div class="bar-track"><div class="bar-fill" style="width:76%"></div></div>
+                <span class="bar-val">7.6k</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Articles Table -->
+    <div class="section">
+        <h3>🏆 Top Performing Articles</h3>
+        <table class="perf-table">
+            <thead>
+                <tr>
+                    <th>Article</th>
+                    <th>Views</th>
+                    <th>Comments</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Article 73</td>
+                    <td>2.9k</td>
+                    <td>210</td>
+                    <td><span class="badge trending">🔥 Trending</span></td>
+                </tr>
+                <tr>
+                    <td>Article 72</td>
+                    <td>1.5k</td>
+                    <td>360</td>
+                    <td><span class="badge published">✅ Published</span></td>
+                </tr>
+                <tr>
+                    <td>Article 71</td>
+                    <td>1.1k</td>
+                    <td>150</td>
+                    <td><span class="badge published">✅ Published</span></td>
+                </tr>
+                <tr>
+                    <td>Article 70</td>
+                    <td>1.2k</td>
+                    <td>420</td>
+                    <td><span class="badge published">✅ Published</span></td>
+                </tr>
+                <tr>
+                    <td>Article 69</td>
+                    <td>980</td>
+                    <td>88</td>
+                    <td><span class="badge draft">Draft</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- AI Summary -->
+    <div class="section">
+        <h3>🤖 AI Insights</h3>
+        <div class="summary-box">
+            <h3>Your Performance Summary</h3>
+            <p>
+                Your content reached <strong>60.5k views</strong> this period — a great milestone! 
+                May was your strongest month with 9.1k views. Article 73 is currently trending 
+                with high engagement. Your comment rate (320 comments / 60.5k views) shows strong 
+                audience interaction. <strong>Tip:</strong> Articles with 1k–3k views tend to get 
+                the most comments — keep publishing in that sweet spot to grow engagement!
+            </p>
+        </div>
+    </div>
+
+    <!-- Download -->
+    <div style="text-align:center; margin-top:10px;">
+        <button class="btn-download" onclick="downloadReport()">⬇️ Download Report (CSV)</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="js/script.js"></script>
+<script>
+    auth.onAuthStateChanged(user => {
+        if (!user) window.location.href = "login.html";
+    });
+
+    function downloadReport() {
+        const csv = `Article,Views,Comments,Status
+Article 73,2900,210,Trending
+Article 72,1500,360,Published
+Article 71,1100,150,Published
+Article 70,1200,420,Published
+Article 69,980,88,Draft`;
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'aidashgen_report.csv';
+        a.click();
+    }
+</script>
+</body>
+</html>
