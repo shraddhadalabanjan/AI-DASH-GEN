@@ -1,4 +1,4 @@
-const firebaseConfig = {
+const = {
   apiKey: "AIzaSyAAHcfBKTNNfUrDnAM8HO6wUelnv1liIog",
   authDomain: "ai-driven-dashboard-gene-88cad.firebaseapp.com",
   projectId: "ai-driven-dashboard-gene-88cad",
