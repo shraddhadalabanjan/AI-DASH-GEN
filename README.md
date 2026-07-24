@@ -19,3 +19,8 @@ An AI-driven portfolio dashboard generator that dynamically syncs user engagemen
 * **Backend:** Python 3, Flask, Flask-CORS
 * **Database:** SQLite3
 * **Authentication:** Firebase (Compat Web SDK v10)
+
+## 📦 DevOps & Automation Architecture
+To bridge the gap between development and production environments, this project integrates modern infrastructure practices:
+* **Containerization:** A custom multi-layer `Dockerfile` packages the Flask backend, HTML front-end dependencies, and the SQLite schema. This guarantees the dashboard environment runs identically on any server machine, solving the "works on my machine" barrier.
+* **CI/CD Automation Pipeline:** Equipped with a GitHub Actions workflow (`main.yml`) that triggers automatically on every code change. The pipeline autonomously handles environment preparation, verifies package versions via `requirements.txt`, and validates Docker build sanity before production deployment.
